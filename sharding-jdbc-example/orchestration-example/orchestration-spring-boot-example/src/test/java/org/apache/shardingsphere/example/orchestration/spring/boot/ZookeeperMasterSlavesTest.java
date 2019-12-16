@@ -22,6 +22,7 @@ import java.sql.SQLException;
 @SpringBootTest(classes = SpringBootTestWithRegistryCenterMain.class)
 @ActiveProfiles("local-zookeeper-master-slave")
 public class ZookeeperMasterSlavesTest {
+
     @Test
     public void assertExampleServiceWithRegistryCenter() throws SQLException {
         try (ConfigurableApplicationContext applicationContext = SpringApplication.run(SpringBootTestWithRegistryCenterMain.class)) {
