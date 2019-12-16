@@ -31,7 +31,7 @@ public class ZookeeperShardingTableDatabasesTest {
 
     @Test
     public void assertExampleServiceWithRegistryCenter() throws SQLException {
-        try (ConfigurableApplicationContext applicationContext = SpringApplication.run(ExampleMain.class)) {
+        try (ConfigurableApplicationContext applicationContext = SpringApplication.run(SpringBootTestWithRegistryCenterMain.class)) {
             ExampleService exampleService = applicationContext.getBean(ExampleService.class);
             ExampleExecuteTemplate.run(exampleService);
             SpringBootJpaAssertUtils.assertShardingTableDatabases(exampleService);
