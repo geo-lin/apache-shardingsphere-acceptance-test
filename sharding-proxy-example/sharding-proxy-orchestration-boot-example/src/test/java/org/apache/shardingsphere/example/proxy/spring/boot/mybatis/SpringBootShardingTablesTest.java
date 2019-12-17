@@ -16,6 +16,7 @@
  */
 
 package org.apache.shardingsphere.example.proxy.spring.boot.mybatis;
+
 import org.apache.shardingsphere.example.core.api.senario.AnnotationCommonServiceScenario;
 import org.apache.shardingsphere.example.core.mybatis.common.SpringResultAssertUtils;
 import org.apache.shardingsphere.example.core.mybatis.service.SpringPojoService;
@@ -30,15 +31,20 @@ import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBootTestMain.class)
-@ActiveProfiles("master-slave")
-public class SpringBootMasterSlaveTest {
+@ActiveProfiles("sharding-tables")
+public class SpringBootShardingTablesTest {
     
     @Autowired
     private SpringPojoService commonService;
     
     @Test
     public void assertCommonService() throws SQLException {
+        /**
+         * sharding-proxy cannot query data when 'max.connections.size.per.query=1' 
+         * for server.yaml using springboot and mybatis framework
+         */
         AnnotationCommonServiceScenario.process1(commonService);
-        SpringResultAssertUtils.assertMasterSlaveResult(commonService);
+        SpringResultAssertUtils.assertShardingTableResult(commonService);
     }
+    
 }
