@@ -10,4 +10,6 @@ sudo sed -i "s/localhost:3307/${ip}:3308/g" `grep localhost:3307 -rl sharding-pr
 sudo sed -i "s/localhost:2181/${ip}:2185/g" `grep localhost:2181 -rl sharding-jdbc-example/`
 sudo sed -i "s/localhost:2181/${ip}:2185/g" `grep localhost:2181 -rl sharding-proxy-example/`
 sudo chmod 777 docker/tools/wait-for-it.sh
+mysql -uroot -p$MYSQL_ROOT_PASSWORD << EOF
+set GLOBAL max_connections = 600;
 sudo bash docker/tools/wait-for-it.sh ${ip}:3308 -- echo "sharding-proxy is available!"
