@@ -1,5 +1,3 @@
-set GLOBAL max_connections = 600;
-
 DROP SCHEMA IF EXISTS demo_ds;
 DROP SCHEMA IF EXISTS demo_ds_0;
 DROP SCHEMA IF EXISTS demo_ds_1;
