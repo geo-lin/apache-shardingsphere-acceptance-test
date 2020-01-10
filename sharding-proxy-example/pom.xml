@@ -14,6 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>sharding-proxy-raw-jdbc-example</module>
         <module>sharding-proxy-boot-mybatis-mysql-example</module>
         <module>sharding-proxy-orchestration-boot-mysql-example</module>
         <module>sharding-proxy-boot-mybatis-postgresql-example</module>
