@@ -17,7 +17,6 @@
 
 package org.apache.shardingsphere.example.core.api;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.zaxxer.hikari.HikariDataSource;
 
 import javax.sql.DataSource;
@@ -35,15 +34,15 @@ public final class DataSourceUtil {
     private static final String MYSQL_USER_NAME = "root";
     
     private static final String MYSQL_PASSWORD = "";
-
+    
     private static final int PG_PORT = 5432;
-
+    
     private static final String PG_USER_NAME = "postgres";
-
+    
     private static final String PG_PASSWORD = "";
-
-    public static DataSource createDataSource(final String dataSourceName,DatabaseType dbType){
-        switch (dbType){
+    
+    public static DataSource createDataSource(final String dataSourceName, DatabaseType dbType) {
+        switch (dbType) {
             case MYSQL:
                 return createMySQLDataSource(dataSourceName);
             case POSTGRESQL:
@@ -65,7 +64,7 @@ public final class DataSourceUtil {
         result.setPassword(MYSQL_PASSWORD);
         return result;
     }
-
+    
     private static DataSource createPostgreSQLDataSource(final String dataSourceName) {
         HikariDataSource result = new HikariDataSource();
         result.setDriverClassName(org.postgresql.Driver.class.getName());
