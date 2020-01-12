@@ -8,7 +8,7 @@
         <artifactId>sharding-example</artifactId>
         <version>4.0.0-RC4-SNAPSHOT</version>
     </parent>
-    <artifactId>sharding-spring-namespace-mybatis-mysql-example</artifactId>
+    <artifactId>sharding-proxy-spring-namespace-mybatis-mysql-example</artifactId>
     <name>AcceptanceTest::proxy::mysql::spring-namespace-mybatis</name>
 
     <dependencies>
