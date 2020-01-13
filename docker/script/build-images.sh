@@ -34,12 +34,14 @@ sudo sed -i "s/localhost:5432/${ip}:${PORT_JDBC_PG}/g" `grep localhost:5432 -rl 
 sudo sed -i "s/localhost:2181/${ip}:${PORT_JDBC_ZK}/g" `grep localhost:2181 -rl sharding-jdbc-example/`
 
 sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_MYSQL_SHARDING}/g" `grep localhost:3307 -rl sharding-proxy-example/sharding-proxy-boot-mybatis-mysql-example/`
-sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_MYSQL_ORCH}/g" `grep localhost:3307 -rl sharding-proxy-example/sharding-proxy-orchestration-boot-mysql-example/`
-sudo sed -i "s/localhost:2181/${ip}:${PORT_PROXY_MYSQL_ZK}/g" `grep localhost:2181 -rl sharding-proxy-example/sharding-proxy-orchestration-boot-mysql-example/`
-
 sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_PG_SHARDING}/g" `grep localhost:3307 -rl sharding-proxy-example/sharding-proxy-boot-mybatis-postgresql-example/`
-sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_PG_ORCH}/g" `grep localhost:3307 -rl sharding-proxy-example/sharding-proxy-orchestration-boot-postgresql-example/`
-sudo sed -i "s/localhost:2181/${ip}:${PORT_PROXY_PG_ZK}/g" `grep localhost:2181 -rl sharding-proxy-example/sharding-proxy-orchestration-boot-postgresql-example/`
+sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_MYSQL_SHARDING}/g" `grep localhost:3307 -rl sharding-proxy-example/sharding-proxy-spring-namespace-mybatis-example/sharding-proxy-spring-namespace-mybatis-mysql-example`
+sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_PG_SHARDING}/g" `grep localhost:3307 -rl sharding-proxy-example/sharding-proxy-spring-namespace-mybatis-example/sharding-proxy-spring-namespace-mybatis-postgresql-example`
+
+sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_MYSQL_ORCH}/g" `grep localhost:3307 -rl orchestration-proxy-example/sharding-proxy-orchestration-boot-mybatis-example/sharding-proxy-orchestration-boot-mysql-example`
+sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_PG_ORCH}/g" `grep localhost:3307 -rl orchestration-proxy-example/sharding-proxy-orchestration-boot-mybatis-example/sharding-proxy-orchestration-boot-postgresql-example`
+sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_PG_SHARDING}/g" `grep localhost:3307 -rl orchestration-proxy-example/sharding-proxy-orchestration-spring-namespace-mybatis-example/sharding-proxy-orchestration-spring-namespace-mybatis-mysql-example`
+sudo sed -i "s/localhost:3307/${ip}:${PORT_PROXY_PG_ORCH}/g" `grep localhost:3307 -rl orchestration-proxy-example/sharding-proxy-orchestration-spring-namespace-mybatis-example/sharding-proxy-orchestration-spring-namespace-mybatis-postgresql-example`
 
 sudo chmod u+x docker/tools/wait-for-it.sh
 sudo bash docker/tools/wait-for-it.sh ${ip}:${PORT_PROXY_MYSQL_SHARDING} -- echo "sharding-proxy-mysql"
