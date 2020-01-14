@@ -24,7 +24,9 @@ public class RawJdbcAssertUtils implements AssertUtils {
     public static void assertMasterSlaves(ExampleService exampleService) {
         MemoryLogService memoryLogService = exampleService.getMemoryLogService();
         assertThat(memoryLogService.getOrderData(DatabaseAccess.INSERT).size(), is(10));
+        assertThat(memoryLogService.getOrderData(DatabaseAccess.SELECT).size(), is(0));
         assertThat(memoryLogService.getOrderItemData(DatabaseAccess.INSERT).size(), is(10));
+        assertThat(memoryLogService.getOrderItemData(DatabaseAccess.SELECT).size(), is(0));
     }
     
     public static void assertShardingMasterSlaves(ExampleService exampleService) {
