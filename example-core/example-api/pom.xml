@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.apache.shardingsphere.example</groupId>
         <artifactId>example-core</artifactId>
-        <version>4.0.0-RC4-SNAPSHOT</version>
+        <version>5.0.0-RC1-SNAPSHOT</version>
     </parent>
     <artifactId>example-api</artifactId>
     <name>common::example-core::example-api</name>
@@ -19,6 +19,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-core</artifactId>
         </dependency>
     </dependencies>
 </project>

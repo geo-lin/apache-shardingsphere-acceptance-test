@@ -6,14 +6,19 @@
     <parent>
         <groupId>org.apache.shardingsphere.example</groupId>
         <artifactId>sharding-jdbc-example</artifactId>
-        <version>4.0.0-RC4-SNAPSHOT</version>
+        <version>5.0.0-RC1-SNAPSHOT</version>
     </parent>
     <artifactId>sharding-example</artifactId>
-    <name>Example::sharding::root</name>
+    <name>AcceptanceTest::sharding::root</name>
     
     <packaging>pom</packaging>
     
     <modules>
-        <module>sharding-spring-boot-mybatis-example</module>
+        <module>sharding-spring-boot-mybatis-mysql-example</module>
+        <module>sharding-spring-boot-mybatis-postgresql-example</module>
+        <module>sharding-raw-jdbc-mysql-example</module>
+        <module>sharding-raw-jdbc-postgresql-example</module>
+        <module>sharding-spring-namespace-mybatis-mysql-example</module>
+        <module>sharding-spring-namespace-mybatis-postgresql-example</module>
     </modules>
 </project>
