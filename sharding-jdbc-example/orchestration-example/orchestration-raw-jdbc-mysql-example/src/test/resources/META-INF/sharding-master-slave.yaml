@@ -94,9 +94,10 @@ props:
   sql.show: false
 
 orchestration:
-  name: orchestration-mysql-yaml-sharding-MS
-  overwrite: true
-  registry:
-    type: zookeeper
+  orchestration-mysql-yaml-sharding-ms:
+    orchestrationType: config_center,registry_center
+    instanceType: zookeeper
     serverLists: localhost:2181
     namespace: orchestration-raw-jdbc-mysql
+    props:
+      overwrite: true

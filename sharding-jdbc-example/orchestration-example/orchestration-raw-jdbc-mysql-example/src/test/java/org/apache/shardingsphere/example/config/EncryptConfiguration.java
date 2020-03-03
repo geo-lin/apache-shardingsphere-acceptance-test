@@ -1,4 +1,5 @@
 package org.apache.shardingsphere.example.config;
+/*
 
 import org.apache.shardingsphere.encrypt.api.EncryptColumnRuleConfiguration;
 import org.apache.shardingsphere.encrypt.api.EncryptRuleConfiguration;
@@ -6,6 +7,7 @@ import org.apache.shardingsphere.encrypt.api.EncryptTableRuleConfiguration;
 import org.apache.shardingsphere.encrypt.api.EncryptorRuleConfiguration;
 import org.apache.shardingsphere.example.core.api.DataSourceUtil;
 import org.apache.shardingsphere.example.core.api.DatabaseType;
+import org.apache.shardingsphere.orchestration.center.configuration.OrchestrationConfiguration;
 import org.apache.shardingsphere.orchestration.config.OrchestrationConfiguration;
 import org.apache.shardingsphere.orchestration.reg.api.RegistryCenterConfiguration;
 import org.apache.shardingsphere.shardingjdbc.api.EncryptDataSourceFactory;
@@ -52,3 +54,4 @@ public class EncryptConfiguration implements ExampleConfiguration {
         return regConfig;
     }
 }
+*/

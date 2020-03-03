@@ -43,9 +43,10 @@ encryptRule:
           encryptor: encryptor_md5
 
 orchestration:
-  name: orchestration-mysql-yaml-encrypt
-  overwrite: true
-  registry:
-    type: zookeeper
+  orchestration-mysql-yaml-encrypt:
+    orchestrationType: config_center,registry_center
+    instanceType: zookeeper
     serverLists: localhost:2181
     namespace: orchestration-raw-jdbc-mysql
+    props:
+      overwrite: true

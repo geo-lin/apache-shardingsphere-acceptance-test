@@ -1,19 +1,34 @@
-package org.apache.shardingsphere.example.config;
 /*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
+package org.apache.shardingsphere.example.config.local;
+
 import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.InlineShardingStrategyConfiguration;
 import org.apache.shardingsphere.encrypt.api.EncryptColumnRuleConfiguration;
 import org.apache.shardingsphere.encrypt.api.EncryptRuleConfiguration;
 import org.apache.shardingsphere.encrypt.api.EncryptTableRuleConfiguration;
 import org.apache.shardingsphere.encrypt.api.EncryptorRuleConfiguration;
+import org.apache.shardingsphere.example.config.ExampleConfiguration;
 import org.apache.shardingsphere.example.core.api.DataSourceUtil;
 import org.apache.shardingsphere.example.core.api.DatabaseType;
-import org.apache.shardingsphere.orchestration.config.OrchestrationConfiguration;
-import org.apache.shardingsphere.orchestration.reg.api.RegistryCenterConfiguration;
-import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
-import org.apache.shardingsphere.shardingjdbc.orchestration.api.OrchestrationShardingDataSourceFactory;
+import org.apache.shardingsphere.orchestration.center.configuration.InstanceConfiguration;
+import org.apache.shardingsphere.orchestration.center.configuration.OrchestrationConfiguration;
+import org.apache.shardingsphere.shardingjdbc.orchestration.api.OrchestrationEncryptDataSourceFactory;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -21,27 +36,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class ShardingEncryptConfiguration implements ExampleConfiguration{
-
+public class LocalShardingEncryptConfiguration implements ExampleConfiguration {
+    
+    private final Map<String, InstanceConfiguration> instanceConfigurationMap;
+    
+    public LocalShardingEncryptConfiguration(final Map<String, InstanceConfiguration> instanceConfigurationMap) {
+        this.instanceConfigurationMap = instanceConfigurationMap;
+    }
+    
     @Override
     public DataSource getDataSource() throws SQLException {
-        ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        shardingRuleConfig.getTableRuleConfigs().add(getTableRuleConfiguration());
-        shardingRuleConfig.setEncryptRuleConfig(getEncryptRuleConfiguration());
-        return OrchestrationShardingDataSourceFactory.createDataSource(
-                createDataSourceMap()
-                , shardingRuleConfig
-                , new Properties()
-                ,new OrchestrationConfiguration("orchestration-mysql-sharding-encrypt",getRegistryCenterConfiguration(),true));
+        return OrchestrationEncryptDataSourceFactory.createDataSource(DataSourceUtil.createDataSource("demo_ds", DatabaseType.MYSQL), getEncryptRuleConfiguration(), new Properties(), getOrchestrationConfiguration());
     }
-
+    
+    private OrchestrationConfiguration getOrchestrationConfiguration() {
+        return new OrchestrationConfiguration(instanceConfigurationMap);
+    }
+    
     private static TableRuleConfiguration getTableRuleConfiguration() {
         TableRuleConfiguration result = new TableRuleConfiguration("t_user", "demo_ds_${0..1}.t_user_${[0, 1]}");
         result.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "demo_ds_${user_id % 2}"));
         result.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id","t_user_${user_id % 2}"));
         return result;
     }
-
+    
     private EncryptRuleConfiguration getEncryptRuleConfiguration() {
         Properties props = new Properties();
         props.setProperty("aes.key.value", "123456");
@@ -59,25 +77,4 @@ public class ShardingEncryptConfiguration implements ExampleConfiguration{
         result.getTables().put("t_user", tableConfig);
         return result;
     }
-
-    private static Map<String, DataSource> createDataSourceMap() {
-        Map<String, DataSource> result = new HashMap<>();
-        result.put("demo_ds_0", DataSourceUtil.createDataSource("demo_ds_0", DatabaseType.MYSQL));
-        result.put("demo_ds_1", DataSourceUtil.createDataSource("demo_ds_1", DatabaseType.MYSQL));
-        return result;
-    }
-
-    private RegistryCenterConfiguration getRegistryCenterConfiguration() {
-        RegistryCenterConfiguration regConfig = new RegistryCenterConfiguration("zookeeper");
-        regConfig.setServerLists("localhost:2181");
-        regConfig.setNamespace("orchestration-raw-jdbc-mysql");
-        return regConfig;
-    }
-
-    private static Properties getProperties() {
-        Properties result = new Properties();
-        result.setProperty("worker.id", "123");
-        return result;
-    }
 }
-*/

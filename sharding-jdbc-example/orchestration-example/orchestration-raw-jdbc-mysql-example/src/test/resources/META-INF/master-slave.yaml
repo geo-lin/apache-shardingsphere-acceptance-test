@@ -41,9 +41,10 @@ masterSlaveRule:
     - ds_slave1
 
 orchestration:
-  name: orchestration-mysql-yaml-MS
-  overwrite: true
-  registry:
-    type: zookeeper
+  orchestration-mysql-yaml-ms:
+    orchestrationType: config_center,registry_center
+    instanceType: zookeeper
     serverLists: localhost:2181
     namespace: orchestration-raw-jdbc-mysql
+    props:
+      overwrite: true

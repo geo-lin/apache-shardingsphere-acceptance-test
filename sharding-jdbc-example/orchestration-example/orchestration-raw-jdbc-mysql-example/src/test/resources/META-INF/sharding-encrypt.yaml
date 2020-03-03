@@ -51,9 +51,10 @@ shardingRule:
             encryptor: encryptor_md5
 
 orchestration:
-  name: orchestration-mysql-yaml-sharding-encrypt
-  overwrite: true
-  registry:
-    type: zookeeper
+  orchestration-mysql-yaml-sharding-encrypt:
+    orchestrationType: config_center,registry_center
+    instanceType: zookeeper
     serverLists: localhost:2181
     namespace: orchestration-raw-jdbc-mysql
+    props:
+      overwrite: true

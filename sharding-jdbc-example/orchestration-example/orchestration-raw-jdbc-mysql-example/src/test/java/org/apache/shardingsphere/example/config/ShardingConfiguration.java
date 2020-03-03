@@ -1,4 +1,5 @@
 package org.apache.shardingsphere.example.config;
+/*
 
 import org.apache.shardingsphere.api.config.sharding.KeyGeneratorConfiguration;
 import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
@@ -8,6 +9,7 @@ import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingSt
 import org.apache.shardingsphere.example.algorithm.PreciseModuloShardingTableAlgorithm;
 import org.apache.shardingsphere.example.core.api.DataSourceUtil;
 import org.apache.shardingsphere.example.core.api.DatabaseType;
+import org.apache.shardingsphere.orchestration.center.configuration.OrchestrationConfiguration;
 import org.apache.shardingsphere.orchestration.config.OrchestrationConfiguration;
 import org.apache.shardingsphere.orchestration.reg.api.RegistryCenterConfiguration;
 import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
@@ -73,3 +75,4 @@ public class ShardingConfiguration implements ExampleConfiguration{
         return result;
     }
 }
+*/
