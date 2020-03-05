@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!--<module>proxy-orchestration-example</module>-->
-        <module>proxy-sharding-example</module>
+        <module>proxy-orchestration-example</module>
+        <!--<module>proxy-sharding-example</module>-->
     </modules>
 </project>
