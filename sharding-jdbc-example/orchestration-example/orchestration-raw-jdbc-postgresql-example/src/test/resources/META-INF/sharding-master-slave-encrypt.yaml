@@ -103,9 +103,10 @@ props:
   sql.show: false
 
 orchestration:
-  name: orchestration-postgresql-yaml-sharding-MS-encrypt
-  overwrite: true
-  registry:
-    type: zookeeper
+  orchestration-postgresql-yaml-sharding-ms-encrypt:
+    orchestrationType: config_center,registry_center
+    instanceType: zookeeper
     serverLists: localhost:2181
     namespace: orchestration-raw-jdbc-postgresql
+    props:
+      overwrite: true

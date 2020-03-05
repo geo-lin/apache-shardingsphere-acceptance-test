@@ -2,22 +2,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:reg="http://shardingsphere.apache.org/schema/shardingsphere/orchestration"
        xmlns:bean="http://www.springframework.org/schema/util"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:encrypt="http://shardingsphere.apache.org/schema/shardingsphere/encrypt"
+       xmlns:orchestraion="http://shardingsphere.apache.org/schema/shardingsphere/orchestration"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/beans/spring-beans.xsd 
                         http://www.springframework.org/schema/context 
                         http://www.springframework.org/schema/context/spring-context.xsd
                         http://www.springframework.org/schema/util
                         http://www.springframework.org/schema/util/spring-util.xsd
                         http://shardingsphere.apache.org/schema/shardingsphere/encrypt
-                        http://shardingsphere.apache.org/schema/shardingsphere/encrypt/encrypt.xsd
+                        http://shardingsphere.apache.org/schema/shardingsphere/encrypt/encrypt.xsd 
                         http://shardingsphere.apache.org/schema/shardingsphere/orchestration
-                         http://shardingsphere.apache.org/schema/shardingsphere/orchestration/orchestration.xsd">
+                        http://shardingsphere.apache.org/schema/shardingsphere/orchestration/orchestration.xsd">
 
     <context:component-scan base-package="org.apache.shardingsphere.example.core.mybatis"/>
-
+    
     <bean id="demo_ds" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl"
@@ -25,12 +26,11 @@
         <property name="username" value="root"/>
         <property name="password" value=""/>
     </bean>
-
-
+    
     <bean:properties id="props">
         <prop key="aes.key.value">123456</prop>
     </bean:properties>
-
+    
     <encrypt:data-source id="encryptDataSource" data-source-name="demo_ds">
         <encrypt:encrypt-rule>
             <encrypt:tables>
@@ -51,15 +51,20 @@
         </encrypt:props>
     </encrypt:data-source>
     
-    <reg:encrypt-data-source id="orchestration-spring-namespace-mysql-encrypt" registry-center-ref="myRegistry" data-source-ref="encryptDataSource" overwrite="true"/>
-
-    <reg:registry-center id="myRegistry" type="zookeeper" server-lists="localhost:2181" namespace="orchestration-spring-namespace-mysql" />
-
+    <orchestraion:encrypt-data-source id="orchestration-spring-namespace-mysql-encrypt-local" data-source-ref="encryptDataSource" instance-ref="regCenter" overwrite="true"/>
+    
+    <util:properties id="instance-props">
+        <prop key="max-retries">3</prop>
+        <prop key="operation-timeout-milliseconds">3000</prop>
+    </util:properties>
+    <orchestraion:instance id="regCenter" orchestration-type="registry_center,config_center" instance-type="zookeeper" server-lists="localhost:2181" namespace="orchestration-spring-namespace-demo"
+                           props-ref="instance-props"/>
+    
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="encryptDataSource"/>
         <property name="mapperLocations" value="classpath*:META-INF/mappers/mysql/*.xml"/>
     </bean>
-
+    
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="org.apache.shardingsphere.example.core.mybatis.repository"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>

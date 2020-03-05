@@ -10,7 +10,7 @@
     <modules>
         <module>example-core</module>
         <module>sharding-jdbc-example</module>
-        <module>sharding-proxy-example</module>
+        <!--<module>sharding-proxy-example</module>-->
     </modules>
 
     <name>AcceptanceTest::root</name>
@@ -238,6 +238,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

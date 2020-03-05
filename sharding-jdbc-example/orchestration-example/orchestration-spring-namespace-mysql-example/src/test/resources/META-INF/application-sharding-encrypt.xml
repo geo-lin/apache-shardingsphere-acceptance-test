@@ -3,9 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:reg="http://shardingsphere.apache.org/schema/shardingsphere/orchestration"
        xmlns:sharding="http://shardingsphere.apache.org/schema/shardingsphere/sharding"
        xmlns:bean="http://www.springframework.org/schema/util"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:orchestraion="http://shardingsphere.apache.org/schema/shardingsphere/orchestration"
        xmlns:encrypt="http://shardingsphere.apache.org/schema/shardingsphere/encrypt"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                         http://www.springframework.org/schema/beans/spring-beans.xsd 
@@ -22,25 +23,25 @@
                         http://shardingsphere.apache.org/schema/shardingsphere/orchestration
                         http://shardingsphere.apache.org/schema/shardingsphere/orchestration/orchestration.xsd">
 
-    <context:component-scan base-package="org.apache.shardingsphere.example.core.mybatis" />
-    
+    <context:component-scan base-package="org.apache.shardingsphere.example.core.mybatis"/>
+
     <bean id="demo_ds_0" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo_ds_0?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="root"/>
         <property name="password" value=""/>
     </bean>
-    
+
     <bean id="demo_ds_1" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo_ds_1?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="root"/>
         <property name="password" value=""/>
     </bean>
-    
-    <sharding:inline-strategy id="databaseStrategy" sharding-column="user_id" algorithm-expression="demo_ds_${user_id % 2}" />
-    <sharding:inline-strategy id="tableStrategy" sharding-column="user_id" algorithm-expression="t_user_${user_id % 2}" />
-    
+
+    <sharding:inline-strategy id="databaseStrategy" sharding-column="user_id" algorithm-expression="demo_ds_${user_id % 2}"/>
+    <sharding:inline-strategy id="tableStrategy" sharding-column="user_id" algorithm-expression="t_user_${user_id % 2}"/>
+
     <bean:properties id="properties">
         <prop key="worker.id">123</prop>
     </bean:properties>
@@ -50,13 +51,13 @@
             <sharding:encrypt-rule>
                 <encrypt:tables>
                     <encrypt:table name="t_user">
-                        <encrypt:column logic-column="user_name" plain-column="user_name" cipher-column="user_name_cipher"  encryptor-ref="encryptor_aes" />
+                        <encrypt:column logic-column="user_name" plain-column="user_name" cipher-column="user_name_cipher" encryptor-ref="encryptor_aes"/>
                         <encrypt:column logic-column="pwd" plain-column="pwd_plain" cipher-column="pwd_cipher" encryptor-ref="encryptor_md5"/>
                     </encrypt:table>
                 </encrypt:tables>
                 <encrypt:encryptors>
-                    <encrypt:encryptor id="encryptor_aes" type="AES"  props-ref="props"/>
-                    <encrypt:encryptor id="encryptor_md5" type="MD5" />
+                    <encrypt:encryptor id="encryptor_aes" type="AES" props-ref="props"/>
+                    <encrypt:encryptor id="encryptor_md5" type="MD5"/>
                 </encrypt:encryptors>
             </sharding:encrypt-rule>
             <sharding:table-rules>
@@ -79,21 +80,25 @@
     </bean:properties>
 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="shardingDataSource" />
+        <property name="dataSource" ref="shardingDataSource"/>
     </bean>
 
-    <reg:sharding-data-source id="orchestration-spring-namespace-mysql-sharding-encrypt" registry-center-ref="myRegistry" data-source-ref="shardingDataSource" overwrite="true"/>
+    <orchestraion:sharding-data-source id="orchestration-spring-namespace-mysql-sharding-encrypt-local" data-source-ref="shardingDataSource" instance-ref="regCenter" overwrite="true"/>
 
-    <reg:registry-center id="myRegistry" type="zookeeper" server-lists="localhost:2181" namespace="orchestration-spring-namespace-mysql" />
-
-
-    <tx:annotation-driven />
+    <util:properties id="instance-props">
+        <prop key="max-retries">3</prop>
+        <prop key="operation-timeout-milliseconds">3000</prop>
+    </util:properties>
+    <orchestraion:instance id="regCenter" orchestration-type="registry_center,config_center" instance-type="zookeeper" server-lists="localhost:2181" namespace="orchestration-spring-namespace-demo"
+                           props-ref="instance-props"/>
     
+    <tx:annotation-driven/>
+
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="shardingDataSource"/>
         <property name="mapperLocations" value="classpath*:META-INF/mappers/mysql/*.xml"/>
     </bean>
-    
+
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="org.apache.shardingsphere.example.core.mybatis.repository"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>

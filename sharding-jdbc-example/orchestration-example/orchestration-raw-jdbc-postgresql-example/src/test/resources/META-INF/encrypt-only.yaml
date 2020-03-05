@@ -43,9 +43,10 @@ encryptRule:
           encryptor: encryptor_md5
 
 orchestration:
-  name: orchestration-postgresql-yaml-encrypt
-  overwrite: true
-  registry:
-    type: zookeeper
+  orchestration-postgresql-yaml-encrypt:
+    orchestrationType: config_center,registry_center
+    instanceType: zookeeper
     serverLists: localhost:2181
     namespace: orchestration-raw-jdbc-postgresql
+    props:
+      overwrite: true

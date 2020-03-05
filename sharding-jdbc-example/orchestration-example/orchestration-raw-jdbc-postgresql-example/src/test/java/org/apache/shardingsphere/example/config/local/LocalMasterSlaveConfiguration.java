@@ -14,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
 
-package org.apache.shardingsphere.example.config;
+package org.apache.shardingsphere.example.config.local;
 
 import org.apache.shardingsphere.api.config.masterslave.MasterSlaveRuleConfiguration;
+import org.apache.shardingsphere.example.config.ExampleConfiguration;
 import org.apache.shardingsphere.example.core.api.DataSourceUtil;
 import org.apache.shardingsphere.example.core.api.DatabaseType;
-import org.apache.shardingsphere.orchestration.config.OrchestrationConfiguration;
-import org.apache.shardingsphere.orchestration.reg.api.RegistryCenterConfiguration;
-import org.apache.shardingsphere.shardingjdbc.api.MasterSlaveDataSourceFactory;
+import org.apache.shardingsphere.orchestration.center.configuration.InstanceConfiguration;
+import org.apache.shardingsphere.orchestration.center.configuration.OrchestrationConfiguration;
 import org.apache.shardingsphere.shardingjdbc.orchestration.api.OrchestrationMasterSlaveDataSourceFactory;
 
 import javax.sql.DataSource;
@@ -33,30 +32,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public final class MasterSlaveConfiguration implements ExampleConfiguration{
-
+public final class LocalMasterSlaveConfiguration implements ExampleConfiguration {
+    
+    private final Map<String, InstanceConfiguration> instanceConfigurationMap;
+    
+    public LocalMasterSlaveConfiguration(final Map<String, InstanceConfiguration> instanceConfigurationMap) {
+        this.instanceConfigurationMap = instanceConfigurationMap;
+    }
+    
     @Override
     public DataSource getDataSource() throws SQLException {
         MasterSlaveRuleConfiguration masterSlaveRuleConfig = new MasterSlaveRuleConfiguration("demo_ds_master_slave", "demo_ds_master", Arrays.asList("demo_ds_slave_0", "demo_ds_slave_1"));
-        return OrchestrationMasterSlaveDataSourceFactory.createDataSource(
-                createDataSourceMap(),
-                masterSlaveRuleConfig,
-                new Properties(),
-                new OrchestrationConfiguration("orchestration-mysql-master-slave",getRegistryCenterConfiguration(),true));
+        OrchestrationConfiguration orchestrationConfig = new OrchestrationConfiguration(instanceConfigurationMap);
+        return OrchestrationMasterSlaveDataSourceFactory.createDataSource(createDataSourceMap(), masterSlaveRuleConfig, new Properties(), orchestrationConfig);
     }
     
     private Map<String, DataSource> createDataSourceMap() {
         Map<String, DataSource> result = new HashMap<>();
-        result.put("demo_ds_master", DataSourceUtil.createDataSource("demo_ds_master", DatabaseType.MYSQL));
-        result.put("demo_ds_slave_0", DataSourceUtil.createDataSource("demo_ds_slave_0", DatabaseType.MYSQL));
-        result.put("demo_ds_slave_1", DataSourceUtil.createDataSource("demo_ds_slave_1", DatabaseType.MYSQL));
+        result.put("demo_ds_master", DataSourceUtil.createDataSource("demo_ds_master", DatabaseType.POSTGRESQL));
+        result.put("demo_ds_slave_0", DataSourceUtil.createDataSource("demo_ds_slave_0", DatabaseType.POSTGRESQL));
+        result.put("demo_ds_slave_1", DataSourceUtil.createDataSource("demo_ds_slave_1", DatabaseType.POSTGRESQL));
         return result;
     }
-    private RegistryCenterConfiguration getRegistryCenterConfiguration() {
-        RegistryCenterConfiguration regConfig = new RegistryCenterConfiguration("zookeeper");
-        regConfig.setServerLists("localhost:2181");
-        regConfig.setNamespace("orchestration-raw-jdbc-mysql");
-        return regConfig;
-    }
 }
-*/
