@@ -30,103 +30,103 @@
 #
 ######################################################################################################
 #
-schemaName: sharding_master_slave_db
-
-dataSources:
-  ds0:
-    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_0?serverTimezone=UTC&useSSL=false
-    username: root
-    password:
-    connectionTimeoutMilliseconds: 30000
-    idleTimeoutMilliseconds: 60000
-    maxLifetimeMilliseconds: 1800000
-    maxPoolSize: 65
-  ds0_slave0:
-    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_0_slave_0?serverTimezone=UTC&useSSL=false
-    username: root
-    password:
-    connectionTimeoutMilliseconds: 30000
-    idleTimeoutMilliseconds: 60000
-    maxLifetimeMilliseconds: 1800000
-    maxPoolSize: 65
-  ds0_slave1:
-    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_0_slave_1?serverTimezone=UTC&useSSL=false
-    username: root
-    password:
-    connectionTimeoutMilliseconds: 30000
-    idleTimeoutMilliseconds: 60000
-    maxLifetimeMilliseconds: 1800000
-    maxPoolSize: 65
-  ds1:
-    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_1?serverTimezone=UTC&useSSL=false
-    username: root
-    password:
-    connectionTimeoutMilliseconds: 30000
-    idleTimeoutMilliseconds: 60000
-    maxLifetimeMilliseconds: 1800000
-    maxPoolSize: 65
-  ds1_slave0:
-    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_1_slave_0?serverTimezone=UTC&useSSL=false
-    username: root
-    password:
-    connectionTimeoutMilliseconds: 30000
-    idleTimeoutMilliseconds: 60000
-    maxLifetimeMilliseconds: 1800000
-    maxPoolSize: 65
-  ds1_slave1:
-    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_1_slave_1?serverTimezone=UTC&useSSL=false
-    username: root
-    password:
-    connectionTimeoutMilliseconds: 30000
-    idleTimeoutMilliseconds: 60000
-    maxLifetimeMilliseconds: 1800000
-    maxPoolSize: 65
-
-shardingRule:
-  tables:
-    t_order:
-      actualDataNodes: ms_ds${0..1}.t_order_${0..1}
-      databaseStrategy:
-        inline:
-          shardingColumn: user_id
-          algorithmExpression: ms_ds${user_id % 2}
-      tableStrategy:
-        inline:
-          shardingColumn: order_id
-          algorithmExpression: t_order_${order_id % 2}
-      keyGenerator:
-        type: SNOWFLAKE
-        column: order_id
-    t_order_item:
-      actualDataNodes: ms_ds${0..1}.t_order_item_${0..1}
-      databaseStrategy:
-        inline:
-          shardingColumn: user_id
-          algorithmExpression: ms_ds${user_id % 2}
-      tableStrategy:
-        inline:
-          shardingColumn: order_id
-          algorithmExpression: t_order_item_${order_id % 2}
-      keyGenerator:
-        type: SNOWFLAKE
-        column: order_item_id
-  bindingTables:
-    - t_order,t_order_item
-
-  defaultDataSourceName: ds0
-  defaultTableStrategy:
-    none:
-
-  masterSlaveRules:
-    ms_ds0:
-      masterDataSourceName: ds0
-      slaveDataSourceNames:
-        - ds0_slave0
-        - ds0_slave1
-      loadBalanceAlgorithmType: ROUND_ROBIN
-    ms_ds1:
-      masterDataSourceName: ds1
-      slaveDataSourceNames:
-        - ds1_slave0
-        - ds1_slave1
-      loadBalanceAlgorithmType: ROUND_ROBIN
+#schemaName: sharding_master_slave_db
+#
+#dataSources:
+#  ds0:
+#    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_0?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 65
+#  ds0_slave0:
+#    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_0_slave_0?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 65
+#  ds0_slave1:
+#    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_0_slave_1?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 65
+#  ds1:
+#    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_1?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 65
+#  ds1_slave0:
+#    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_1_slave_0?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 65
+#  ds1_slave1:
+#    url: jdbc:mysql://proxy-mysql:3306/demo_ds_master_1_slave_1?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 65
+#
+#shardingRule:
+#  tables:
+#    t_order:
+#      actualDataNodes: ms_ds${0..1}.t_order_${0..1}
+#      databaseStrategy:
+#        inline:
+#          shardingColumn: user_id
+#          algorithmExpression: ms_ds${user_id % 2}
+#      tableStrategy:
+#        inline:
+#          shardingColumn: order_id
+#          algorithmExpression: t_order_${order_id % 2}
+#      keyGenerator:
+#        type: SNOWFLAKE
+#        column: order_id
+#    t_order_item:
+#      actualDataNodes: ms_ds${0..1}.t_order_item_${0..1}
+#      databaseStrategy:
+#        inline:
+#          shardingColumn: user_id
+#          algorithmExpression: ms_ds${user_id % 2}
+#      tableStrategy:
+#        inline:
+#          shardingColumn: order_id
+#          algorithmExpression: t_order_item_${order_id % 2}
+#      keyGenerator:
+#        type: SNOWFLAKE
+#        column: order_item_id
+#  bindingTables:
+#    - t_order,t_order_item
+#
+#  defaultDataSourceName: ds0
+#  defaultTableStrategy:
+#    none:
+#
+#  masterSlaveRules:
+#    ms_ds0:
+#      masterDataSourceName: ds0
+#      slaveDataSourceNames:
+#        - ds0_slave0
+#        - ds0_slave1
+#      loadBalanceAlgorithmType: ROUND_ROBIN
+#    ms_ds1:
+#      masterDataSourceName: ds1
+#      slaveDataSourceNames:
+#        - ds1_slave0
+#        - ds1_slave1
+#      loadBalanceAlgorithmType: ROUND_ROBIN

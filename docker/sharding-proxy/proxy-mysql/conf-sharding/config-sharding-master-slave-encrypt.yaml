@@ -132,4 +132,3 @@ shardingRule:
            plainColumn: pwd_plain
            cipherColumn: pwd_cipher
            encryptor: encryptor_md5
-        
