@@ -25,7 +25,7 @@ services:
 
   zookeeper:
     ## get more versions of zookeeper here : https://hub.docker.com/_/zookeeper?tab=tags
-    image: "zookeeper:3.4"
+    image: "zookeeper:latest"
     ports: 
      - "2185:2181"
     container_name: sharding-proxy-zookeeper-mysql
