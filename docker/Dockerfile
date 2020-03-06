@@ -32,4 +32,4 @@ RUN mv ${HEADER_NAME}*-bin $LOCAL_PATH
 COPY ./driver/mysql-connector-java-5.1.47.jar ${LOCAL_PATH}/lib/mysql-connector-java-5.1.47.jar
 RUN rm -f sharding-proxy-bin.tar.gz
 #/usr/local/bin/wait-for-it.sh sharding-mysql:3306 --
-ENTRYPOINT /sharding-proxy/bin/start.sh $PORT && tail -f /sharding-proxy/logs/stdout.log
+ENTRYPOINT /sharding-proxy/bin/start.sh $PORT && tail -f /sharding-proxy/logs/sout.log
